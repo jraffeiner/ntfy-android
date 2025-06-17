@@ -64,17 +64,18 @@ android {
             '-Xjvm-default=all-compatibility' // https://stackoverflow.com/a/71234042/1440785
         ]
     }
+    namespace 'io.heckel.ntfy'
 }
 
 // Disables GoogleServices tasks for F-Droid variant
-android.applicationVariants.all { variant ->
+android.applicationVariants.configureEach { variant ->
     def shouldProcessGoogleServices = variant.flavorName == "play"
-    def googleTask = tasks.findByName("process${variant.name.capitalize()}GoogleServices")
+    def googleTask = tasks.named("process${variant.name.capitalize()}GoogleServices")
     googleTask.enabled = shouldProcessGoogleServices
 }
 
 // Strips out REQUEST_INSTALL_PACKAGES permission for Google Play variant
-android.applicationVariants.all { variant ->
+android.applicationVariants.configureEach { variant ->
     def shouldStripInstallPermission = variant.flavorName == "play"
     if (shouldStripInstallPermission) {
         variant.outputs.each { output ->
