@@ -9,6 +9,10 @@ apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 33
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId "io.heckel.ntfy"
         minSdkVersion 21
@@ -71,7 +75,7 @@ android {
 android.applicationVariants.configureEach { variant ->
     def shouldProcessGoogleServices = variant.flavorName == "play"
     def googleTask = tasks.named("process${variant.name.capitalize()}GoogleServices")
-    googleTask.configure { T -> T.enabled = shouldProcessGoogleServices }
+    googleTask.enabled = shouldProcessGoogleServices
 }
 
 // Strips out REQUEST_INSTALL_PACKAGES permission for Google Play variant
